@@ -5,9 +5,11 @@ const snBase = require('./sn_db_controller');
 const temperatureBase = require('./temperature_db_controller');
 
 const PORT = 8080;
+let count = 1;
 
 const app = express();
-app.use(bodyParser.text({type: 'text/plain', limit: '50mb'}))
+// app.use(bodyParser.text({type: 'text/plain', limit: '50mb'}))
+app.use(express.json());
 app.use(cors());
 
 
@@ -66,6 +68,24 @@ app.post('/fileSn', (req, res) => {
     res.sendStatus(200);
 })
 
+
+app.post('/temperature', (req, res) => {
+    count = count + 1;
+    const rBody = req.body;
+    console.log(rBody);
+    if ("point" in rBody && "datatime" in rBody && "value" in rBody) {
+        const {point, datatime, value} = rBody;
+        const resInsert = temperatureBase.add(point, datatime, value);
+        console.log(resInsert);
+        res.send('Inserted !');
+    } else {
+        res.status(400).send("Error");
+    }
+});
+
+app.post('/temperature/delete', (req, res) => {
+    temperatureBase.deleteTable();
+});
 
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);

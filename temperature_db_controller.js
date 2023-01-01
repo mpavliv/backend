@@ -8,15 +8,17 @@ class Temperature_DB{
 
   constructor() {
     this.db = new Database(DB_NAME);
+    this.createTable();
   }
 
   deleteTable(){
     const sql = `DROP TABLE ${TABLE_NAME}`;
     this.db.exec(sql);
+    this.createTable();
   }
 
   createTable(){
-    const sql = `CREATE TABLE IF NOT EXISTs ${TABLE_NAME}(point INTEGER, datatime INTEGER, value REAL)`;
+    const sql = `CREATE TABLE IF NOT EXISTs ${TABLE_NAME}(point INTEGER, datatime INTEGER, value INTEGER)`;
     this.db.exec(sql);
   }
 
@@ -53,14 +55,9 @@ class Temperature_DB{
     return result;
   }
 
-  add(req){
-    const rBody = req.body;
-    let resInsert;
-    if ("point" in rBody && "datatime" in rBody && "value" in rBody) {
-      const insert = this.db.prepare(`INSERT INTO t_data(point, datatime, value) VALUES (?, ?, ?)`);
-      const {point, datatime, value} = rBody;
-      resInsert = insert.run(point, datatime, value);
-    }
+  add(point, datatime, value){
+    const insert = this.db.prepare(`INSERT INTO t_data(point, datatime, value) VALUES (?, ?, ?)`);
+    const resInsert = insert.run(point, datatime, value);
     return resInsert;
   }
 
