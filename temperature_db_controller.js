@@ -21,7 +21,7 @@ class Temperature_DB{
   }
 
   read(time1, time2, point){
-    const sql = db.prepare(
+    const sql = this.db.prepare(
       `SELECT datatime, value FROM t_data WHERE datatime > ${time1} and datatime < ${time2} and point = ${point}`
     ); 
     const result = new Object();
@@ -34,7 +34,7 @@ class Temperature_DB{
   }
 
   readCurrent(point){
-    const row = db.prepare(`SELECT MAX(datatime), value FROM t_data WHERE point = ${point}`).get();
+    const row = this.db.prepare(`SELECT MAX(datatime), value FROM t_data WHERE point = ${point}`).get();
     let currentTemperature;
     if (row) {
       currentTemperature = {"point": 1, "temperature": row.value};
@@ -43,7 +43,7 @@ class Temperature_DB{
   }
 
   readAll(point){
-    const sql = db.prepare(`SELECT datatime, value FROM t_data WHERE point = ${point}`);
+    const sql = this.db.prepare(`SELECT datatime, value FROM t_data WHERE point = ${point}`);
     const result = new Object();
     for (let row of sql.iterate()) {
       const key = row.datatime.toString();
@@ -57,7 +57,7 @@ class Temperature_DB{
     const rBody = req.body;
     let resInsert;
     if ("point" in rBody && "datatime" in rBody && "value" in rBody) {
-      const insert = db.prepare(`INSERT INTO t_data(point, datatime, value) VALUES (?, ?, ?)`);
+      const insert = this.db.prepare(`INSERT INTO t_data(point, datatime, value) VALUES (?, ?, ?)`);
       const {point, datatime, value} = rBody;
       resInsert = insert.run(point, datatime, value);
     }
