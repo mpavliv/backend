@@ -13,7 +13,7 @@ app.use(cors());
 
 
 app.get('/sn', (req, res) => {
-    res.send(Array.from(sn).join('\n'));
+    res.send("sn request");
 })
 
 app.get('/temperature', (req, res) => {
