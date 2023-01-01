@@ -74,7 +74,8 @@ app.post('/temperature', (req, res) => {
     const rBody = req.body;
     console.log(rBody);
     if ("point" in rBody && "datatime" in rBody && "value" in rBody) {
-        const {point, datatime, value} = rBody;
+        let {point, datatime, value} = rBody;
+        if (datatime = 0) {datatime =  Date.now()}
         const resInsert = temperatureBase.add(point, datatime, value);
         console.log(resInsert);
         res.send('Inserted !');
