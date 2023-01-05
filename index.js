@@ -1,15 +1,17 @@
 const express = require('express');
-bodyParser = require('body-parser');
 const cors = require('cors');
 const snBase = require('./sn_db_controller');
 const temperatureBase = require('./temperature_db_controller');
+const bodyParser = require('body-parser');
 
 const PORT = 8080;
 let count = 1;
 
 const app = express();
 // app.use(bodyParser.text({type: 'text/plain', limit: '50mb'}))
-app.use(express.json());
+// app.use(express.json());
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 
@@ -70,12 +72,13 @@ app.post('/fileSn', (req, res) => {
 
 
 app.post('/temperature', (req, res) => {
+    console.log(req.body);
     count = count + 1;
     const rBody = req.body;
     console.log(rBody);
     if ("point" in rBody && "datatime" in rBody && "value" in rBody) {
         let {point, datatime, value} = rBody;
-        if (datatime = 0) {datatime =  Date.now()}
+        if (datatime == '0') {datatime =  Date.now()}
         const resInsert = temperatureBase.add(point, datatime, value);
         console.log(resInsert);
         res.send('Inserted !');
