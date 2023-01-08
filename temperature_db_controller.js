@@ -36,10 +36,11 @@ class Temperature_DB{
   }
 
   readCurrent(point){
-    const row = this.db.prepare(`SELECT MAX(datatime), value FROM t_data WHERE point = ${point}`).get();
+    const row = this.db.prepare(`SELECT MAX(datatime) as time, value FROM t_data WHERE point = ${point}`).get();
     let currentTemperature;
     if (row) {
-      currentTemperature = {"point": 1, "temperature": row.value};
+      console.log(row);
+      currentTemperature = {"point": point, "temperature": row.value};
     }
     return currentTemperature;
   }
