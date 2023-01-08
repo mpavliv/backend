@@ -26,6 +26,7 @@ class Temperature_DB{
     const sql = this.db.prepare(
       `SELECT datatime, value FROM t_data WHERE datatime > ${time1} and datatime < ${time2} and point = ${point}`
     ); 
+    console.log(`time1: ${time1}  time2: ${time2}  point: ${point}`);
     const result = new Object();
     for (let row of sql.iterate()) {
       const key = row.datatime.toString();
