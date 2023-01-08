@@ -39,8 +39,7 @@ class Temperature_DB{
     const row = this.db.prepare(`SELECT MAX(datatime) as time, value FROM t_data WHERE point = ${point}`).get();
     let currentTemperature;
     if (row) {
-      console.log(row);
-      currentTemperature = {"point": point, "temperature": row.value};
+      currentTemperature = {"point": point, "time": row.time, "temperature": row.value};
     }
     return currentTemperature;
   }
