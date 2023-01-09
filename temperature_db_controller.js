@@ -37,7 +37,7 @@ class Temperature_DB{
   }
 
   readCurrent(point){
-    const row = this.db.prepare(`SELECT MAX(datatime) as time, value FROM t_data WHERE point = ${point}`).get();
+    const row = this.db.prepare(`SELECT MAX(datatime) as time, point, value FROM t_data WHERE point = ${point}`).get();
     let currentTemperature;
     if (row) {
       currentTemperature = {"point": point, "time": row.time, "temperature": row.value};
@@ -46,7 +46,7 @@ class Temperature_DB{
   }
 
   readAll(point){
-    const sql = this.db.prepare(`SELECT datatime, value FROM t_data WHERE point = ${point}`);
+    const sql = this.db.prepare(`SELECT point, datatime, value FROM t_data WHERE point = ${point}`);
     const result = new Object();
     for (let row of sql.iterate()) {
       const key = row.datatime.toString();

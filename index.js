@@ -95,6 +95,7 @@ app.post('/temperature', (req, res) => {
 
 app.post('/temperature/delete', (req, res) => {
     temperatureBase.deleteTable();
+    res.send("Deleted");
 });
 
 app.listen(PORT, () => {
