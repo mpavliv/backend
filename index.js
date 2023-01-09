@@ -100,6 +100,7 @@ app.post('/temperature', (req, res) => {
 });
 
 app.post('/temperature/delete', (req, res) => {
+    console.log('delete require');
     temperatureBase.deleteTable();
     res.send("Deleted");
 });
