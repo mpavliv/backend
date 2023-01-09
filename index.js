@@ -22,9 +22,15 @@ app.get('/sn', (req, res) => {
 
 app.get('/temperature', (req, res) => {
     const point = req.query.point || 1;
+    const time1 = req.query.time1;
+    const time2 = req.query.time2;
+
     let result;
-    if ( req.query.time1 && req.query.time2 ) {
-        result = temperatureBase.read(req.query.time1, req.query.time2, point);
+   
+
+
+    if ( (!!time1) && (!!time2) ) {
+        result = temperatureBase.read(time1, time2, point);
     } else {
         result = temperatureBase.readAll(point);
     };
